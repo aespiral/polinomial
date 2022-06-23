@@ -49,6 +49,37 @@ void pprint(struct pn p) {
     putchar('\n');
 }
 
+bool normalizado(struct pn p) {
+    int i, grau;
+    for(i = 0, grau = 0; i < MAX; i = i + 1) {
+        if (p.c[i] < TOL)
+            grau = i;
+    }
+    return p.n == grau;
+}
+
+void normalizar(struct pn p) {
+    int i, grau;
+    for(i = 0, grau = 0; i < MAX; i = i + 1) {
+        if (p.c[i] < TOL)
+            grau = i;
+    }
+    res.nome = p.nome;
+    res.n = grau;
+    for(i = 0; i < MAX; i = i + 1) 
+        res.c[i] = p.c[i];
+}
+
+// somar
+
+// derivar
+
+// multiplicar por escalar (constante)
+
+// multiplicar por x
+
+// multiplicar 2 polinomios
+
 int main() {
     struct pn q; q.nome = 'q'; q.n = 2;
     q.c[0] = 1.0; q.c[1] = 5.0; q.c[2] = 2.7;
