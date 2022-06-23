@@ -36,7 +36,23 @@ float raiz(struct pn p) {
 }
 
 void pprint(struct pn p) {
-    printf("%c(x) = %.3f . x^%d", p.nome, p.c[p.n], p.n);
+    printf("%c(x) = ", p.nome);
+    // Os casos n == 0 e n == 1 sao tratados a parte
+    //   apenas para evitar escrever x^1 e x^0
+    if (p.n == 0){
+        printf("%.3f\n", p.c[0]);
+        return; // dica: o return termina a funcao 
+        // eh como se tudo daqui para baixo fosse um 'else'
+    } 
+    if (p.n == 1){
+        printf("%.3f . x", p.c[1]);
+        if (p.c[0] > TOL)
+            printf(" + %.3f", p.c[0]);
+        putchar('\n');
+        return;
+    }
+
+    printf("%.3f . x^%d", p.c[p.n], p.n);
     int i;
     for(i=p.n-1; i >= 2; i = i - 1) {
         if (p.c[i] > TOL)
@@ -84,4 +100,25 @@ int main() {
     struct pn q; q.nome = 'q'; q.n = 2;
     q.c[0] = 1.0; q.c[1] = 5.0; q.c[2] = 2.7;
     pprint(q);
+
+    struct pn p1;
+    p1.nome = 'k';
+    p1.n = 1;
+    p1.c[0] = 4.7;
+    p1.c[1] = 0.575;
+    pprint(p1);
+
+    struct pn p2;
+    p2.nome = 'w';
+    p2.n = 2;
+    p2.c[2] = 3.5;
+    p2.c[1] = 0.5;
+    p2.c[0] = 0.0;
+    pprint(p2);
+
+    struct pn p3;
+    p3.nome = 'z';
+    p3.n = 0;
+    p3.c[0] = 0.0;
+    pprint(p3);
 }
