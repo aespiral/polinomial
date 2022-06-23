@@ -35,6 +35,11 @@ float raiz(struct pn p) {
     // funciona para n == 1 e n == 2 (báskara)
 }
 
+/*
+ * Melhorias possiveis no Pretty Print:
+ * - Em vez de mostrar 2.000, 3.000, etc., mostrar 2 , 3 , etc.
+ * - Em vez de mostrar 1.000 . x^algo (ou 1 . x^algo), mostrar x^algo
+ */
 void pprint(struct pn p) {
     printf("%c(x) = ", p.nome);
     // Os casos n == 0 e n == 1 sao tratados a parte
@@ -66,23 +71,16 @@ void pprint(struct pn p) {
 }
 
 bool normalizado(struct pn p) {
-    int i, grau;
-    for(i = 0, grau = 0; i < MAX; i = i + 1) {
-        if (p.c[i] < TOL)
-            grau = i;
-    }
-    return p.n == grau;
+    return p.c[p.n] > TOL;
 }
 
 void normalizar(struct pn p) {
-    int i, grau;
-    for(i = 0, grau = 0; i < MAX; i = i + 1) {
-        if (p.c[i] < TOL)
-            grau = i;
-    }
+    int i = p.n; 
+    while(p.c[i] < TOL) 
+        i = i - 1;
     res.nome = p.nome;
-    res.n = grau;
-    for(i = 0; i < MAX; i = i + 1) 
+    res.n = i;
+    for(i = 0; i <= res.n; i = i + 1) 
         res.c[i] = p.c[i];
 }
 
@@ -121,4 +119,43 @@ int main() {
     p3.n = 0;
     p3.c[0] = 0.0;
     pprint(p3);
+
+    // Exemplo de polinomio normalizado
+    puts("--------");
+    pprint(p1);
+    if (normalizado(p1))
+        printf("O polinomio %c estah normalizado.\n", p1.nome);
+    else
+        printf("O polinomio %c nao estah normalizado\n", p1.nome);
+
+    // Exemplo de polinomio nao normalizado
+    puts("--------");
+    struct pn p4;
+    p4.nome = 's';
+    p4.n = 4;
+    p4.c[4] = 0.0;
+    p4.c[3] = 0.0;
+    p4.c[2] = 1.0;
+    p4.c[1] = 7.5;
+    p4.c[0] = 4.0;
+    pprint(p4);
+    if (normalizado(p4))
+        printf("O polinomio %c estah normalizado.\n", p4.nome);
+    else
+        printf("O polinomio %c nao estah normalizado\n", p4.nome);
+
+    // Normalizando
+    puts("--------");
+    normalizar(p4);
+    struct pn p5;
+    p5.nome = res.nome;
+    p5.n = res.n;
+    int i;
+    for(i = 0; i <= res.n; i = i + 1) 
+        p5.c[i] = res.c[i];
+    pprint(p5);
+    if (normalizado(p5))
+        printf("O polinomio %c estah normalizado.\n", p5.nome);
+    else
+        printf("O polinomio %c nao estah normalizado\n", p5.nome);
 }
